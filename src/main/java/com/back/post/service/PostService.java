@@ -4,10 +4,12 @@ import com.back.member.entity.Member;
 import com.back.member.repository.MemberRepository;
 import com.back.post.dto.PostRequestDto;
 import com.back.post.dto.PostResponseDto;
+import com.back.post.dto.PostUpdateDto;
 import com.back.post.entity.Post;
 import com.back.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +30,22 @@ public class PostService {
         Post savePost = postRepository.save(post);
 
         return PostResponseDto.from(savePost);
+    }
+
+    @Transactional
+    public PostResponseDto updatePost(Long postId, PostUpdateDto updateDto, Long memberId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+
+        if (!post.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("게시글 수정 권한이 없습니다.");
+        }
+
+        post.update(
+                updateDto.getTitle(),
+                updateDto.getContent()
+        );
+
+        return PostResponseDto.from(post);
     }
 }
