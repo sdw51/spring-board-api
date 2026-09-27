@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -32,9 +33,16 @@ public class Comment {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
     public Comment(String content, Post post, Member member) {
         this.content = content;
         this.post = post;
         this.member = member;
+    }
+
+    public void update(String content) {
+        this.content = content;
     }
 }

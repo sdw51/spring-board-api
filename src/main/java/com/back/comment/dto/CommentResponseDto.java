@@ -14,13 +14,15 @@ public class CommentResponseDto {
     private String content;
     private String nickName;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static CommentResponseDto from(Comment comment) {
         return new CommentResponseDto(
                 comment.getId(),
                 comment.getContent(),
                 comment.getMember().getNickName(),
-                comment.getCreatedAt()
+                comment.getCreatedAt(),
+                comment.getUpdatedAt()
         );
     }
 }
