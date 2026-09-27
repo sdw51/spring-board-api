@@ -22,6 +22,7 @@ public class SecurityConfig {
                                 "/v1/members/signup",
                                 "/v1/members/login",
                                 "/h2-console/**",
+                                "/v1/posts/**",
                                 "/error"
                         ).permitAll()
                         .anyRequest().authenticated()

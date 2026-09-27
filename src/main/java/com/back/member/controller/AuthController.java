@@ -5,6 +5,7 @@ import com.back.member.dto.LoginResponseDto;
 import com.back.member.dto.SignUpRequestDto;
 import com.back.member.dto.SignupResponseDto;
 import com.back.member.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +29,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public LoginResponseDto Login(
-            @Valid @RequestBody LoginRequestDto requestDto
+            @Valid @RequestBody LoginRequestDto requestDto,
+            HttpSession session
     ) {
-        return memberService.Login(requestDto);
+        LoginResponseDto responseDto = memberService.Login(requestDto);
+
+        session.setAttribute("memberId", responseDto.getId());
+
+        return responseDto;
     }
 }
