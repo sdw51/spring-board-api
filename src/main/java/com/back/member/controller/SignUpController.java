@@ -3,6 +3,7 @@ package com.back.member.controller;
 import com.back.member.dto.SignUpRequestDto;
 import com.back.member.dto.SignupResponseDto;
 import com.back.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ public class SignUpController {
 
     @PostMapping("/signup")
     public SignupResponseDto signUp(
-            @RequestBody SignUpRequestDto requestDto
+            @Valid @RequestBody SignUpRequestDto requestDto
     ) {
         return memberService.signUp(requestDto);
     }

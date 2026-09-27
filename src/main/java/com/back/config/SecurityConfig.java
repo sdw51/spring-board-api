@@ -18,8 +18,10 @@ public class SecurityConfig {
                         .frameOptions(frame -> frame.disable())
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v1/members/signup",
-                                "/h2-console/**"
+                        .requestMatchers(
+                                "/v1/members/signup",
+                                "/h2-console/**",
+                                "/error"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );
