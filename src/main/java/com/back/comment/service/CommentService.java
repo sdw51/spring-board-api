@@ -59,4 +59,19 @@ public class CommentService {
 
         return CommentResponseDto.from(comment);
     }
+
+    @Transactional
+    public void deleteComment(
+            Long commentId,
+            Long memberId
+    ) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+
+        if (!comment.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("댓글 삭제 권한이 없습니다.");
+        }
+
+        commentRepository.delete(comment);
+    }
 }

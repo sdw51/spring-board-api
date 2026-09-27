@@ -36,4 +36,14 @@ public class CommentController {
 
         return commentService.updateComment(commentId, memberId, requestDto);
     }
+
+    @DeleteMapping("/{commentId}")
+    public void deleteComment(
+            @PathVariable Long commentId,
+            Authentication authentication
+    ) {
+        Long memberId = (Long) authentication.getPrincipal();
+
+        commentService.deleteComment(commentId, memberId);
+    }
 }
