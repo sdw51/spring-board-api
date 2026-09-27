@@ -44,4 +44,17 @@ public class PostController {
         return postService.updatePost(postId, updateDto, memberId);
     }
 
+    @DeleteMapping("/{postId}")
+    public void deletePost(
+            @PathVariable Long postId,
+            Authentication authentication
+    ) {
+        Long memberId = (Long) authentication.getPrincipal();
+
+        if (memberId == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
+
+        postService.deletePost(postId, memberId);
+    }
 }

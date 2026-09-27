@@ -48,4 +48,17 @@ public class PostService {
 
         return PostResponseDto.from(post);
     }
+
+    @Transactional
+    public void deletePost(Long postId, Long memberId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+
+        if (!post.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("게시글 수정 권한이 없습니다.");
+        }
+
+        postRepository.delete(post);
+
+    }
 }
