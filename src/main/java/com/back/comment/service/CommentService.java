@@ -5,6 +5,7 @@ import com.back.comment.dto.CommentResponseDto;
 import com.back.comment.dto.CommentUpdateRequestDto;
 import com.back.comment.entity.Comment;
 import com.back.comment.repository.CommentRepository;
+import com.back.global.exception.NotFoundException;
 import com.back.member.entity.Member;
 import com.back.member.repository.MemberRepository;
 import com.back.post.entity.Post;
@@ -28,10 +29,10 @@ public class CommentService {
             CommentRequestDto requestDto
     ) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
 
         Comment comment = new Comment(
                 requestDto.getContent(),
@@ -51,7 +52,7 @@ public class CommentService {
             CommentUpdateRequestDto requestDto
     ) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("댓글 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("댓글 찾을 수 없습니다."));
 
         if (!comment.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("댓글 수정 권한이 없습니다.");
@@ -68,7 +69,7 @@ public class CommentService {
             Long memberId
     ) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("댓글을 찾을 수 없습니다."));
 
         if (!comment.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("댓글 삭제 권한이 없습니다.");

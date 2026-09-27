@@ -1,5 +1,6 @@
 package com.back.post.service;
 
+import com.back.global.exception.NotFoundException;
 import com.back.member.entity.Member;
 import com.back.member.repository.MemberRepository;
 import com.back.post.dto.PostListResponseDto;
@@ -22,7 +23,7 @@ public class PostService {
 
     public PostResponseDto createPost(Long memberId, PostRequestDto requestDto) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
 
         Post post = new Post(
                 requestDto.getTitle(),
@@ -38,7 +39,7 @@ public class PostService {
     @Transactional
     public PostResponseDto updatePost(Long postId, PostUpdateDto updateDto, Long memberId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
 
         if (!post.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("게시글 수정 권한이 없습니다.");
@@ -55,7 +56,7 @@ public class PostService {
     @Transactional
     public void deletePost(Long postId, Long memberId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
 
         if (!post.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("게시글 수정 권한이 없습니다.");
@@ -73,7 +74,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponseDto getPost(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
 
         return PostResponseDto.from(post);
     }
