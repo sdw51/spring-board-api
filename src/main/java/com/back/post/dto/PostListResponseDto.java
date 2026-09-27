@@ -13,4 +13,6 @@ public class PostListResponseDto {
     private String title;
     private String nickname;
     private LocalDateTime createdAt;
+
+    private Long commentCount;
 }

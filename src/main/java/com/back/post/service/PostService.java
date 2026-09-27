@@ -67,16 +67,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<PostListResponseDto> getPosts(Pageable pageable) {
-
-        Page<Post> posts = postRepository.findAllByOrderByCreatedAtDesc(pageable);
-
-        return posts.map(post ->
-                new PostListResponseDto(
-                        post.getId(),
-                        post.getTitle(),
-                        post.getMember().getNickName(),
-                        post.getCreatedAt()
-                ));
+        return postRepository.findPostList(pageable);
     }
 
     @Transactional(readOnly = true)
