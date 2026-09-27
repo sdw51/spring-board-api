@@ -26,6 +26,7 @@ public class SecurityConfig {
                                 "/error"
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/posts/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v1/comments/**").permitAll()
                         .anyRequest().authenticated()
                 );
         return httpSecurity.build();

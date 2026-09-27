@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/comments")
 @RequiredArgsConstructor
@@ -45,5 +47,12 @@ public class CommentController {
         Long memberId = (Long) authentication.getPrincipal();
 
         commentService.deleteComment(commentId, memberId);
+    }
+
+    @GetMapping("/posts/{postId}")
+    public List<CommentResponseDto> getComments(
+            @PathVariable Long postId
+    ) {
+        return commentService.getComments(postId);
     }
 }
