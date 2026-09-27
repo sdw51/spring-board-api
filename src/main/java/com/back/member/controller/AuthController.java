@@ -5,13 +5,20 @@ import com.back.member.dto.LoginResponseDto;
 import com.back.member.dto.SignUpRequestDto;
 import com.back.member.dto.SignupResponseDto;
 import com.back.member.service.MemberService;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collections;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,11 +37,23 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponseDto Login(
             @Valid @RequestBody LoginRequestDto requestDto,
-            HttpSession session
+            HttpServletRequest request
     ) {
         LoginResponseDto responseDto = memberService.Login(requestDto);
 
-        session.setAttribute("memberId", responseDto.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                responseDto.getId(),
+                null,
+                Collections.emptyList()
+        );
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(authentication);
+
+        request.getSession().setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                securityContext
+        );
 
         return responseDto;
     }
