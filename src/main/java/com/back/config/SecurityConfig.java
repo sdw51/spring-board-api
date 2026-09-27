@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/v1/members/signup",
+                                "/v1/members/login",
                                 "/h2-console/**",
                                 "/error"
                         ).permitAll()
