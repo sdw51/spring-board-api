@@ -1,11 +1,14 @@
 package com.back.post.controller;
 
+import com.back.post.dto.PostListResponseDto;
 import com.back.post.dto.PostRequestDto;
 import com.back.post.dto.PostResponseDto;
 import com.back.post.dto.PostUpdateDto;
 import com.back.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,4 +60,17 @@ public class PostController {
 
         postService.deletePost(postId, memberId);
     }
+
+    @GetMapping
+    public Page<PostListResponseDto> getPosts(Pageable pageable) {
+        return postService.getPosts(pageable);
+    }
+
+    @GetMapping("/{postId}")
+    public PostResponseDto getPost(
+            @PathVariable Long postId
+    ) {
+        return postService.getPost(postId);
+    }
+
 }
