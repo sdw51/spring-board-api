@@ -5,6 +5,7 @@ import com.back.comment.dto.CommentResponseDto;
 import com.back.comment.dto.CommentUpdateRequestDto;
 import com.back.comment.entity.Comment;
 import com.back.comment.repository.CommentRepository;
+import com.back.global.exception.ForbiddenException;
 import com.back.global.exception.NotFoundException;
 import com.back.member.entity.Member;
 import com.back.member.repository.MemberRepository;
@@ -55,7 +56,7 @@ public class CommentService {
                 .orElseThrow(() -> new NotFoundException("댓글 찾을 수 없습니다."));
 
         if (!comment.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("댓글 수정 권한이 없습니다.");
+            throw new ForbiddenException("댓글 수정 권한이 없습니다.");
         }
 
         comment.update(requestDto.getContent());
@@ -72,7 +73,7 @@ public class CommentService {
                 .orElseThrow(() -> new NotFoundException("댓글을 찾을 수 없습니다."));
 
         if (!comment.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("댓글 삭제 권한이 없습니다.");
+            throw new ForbiddenException("댓글 삭제 권한이 없습니다.");
         }
 
         commentRepository.delete(comment);

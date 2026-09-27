@@ -1,5 +1,6 @@
 package com.back.post.service;
 
+import com.back.global.exception.ForbiddenException;
 import com.back.global.exception.NotFoundException;
 import com.back.member.entity.Member;
 import com.back.member.repository.MemberRepository;
@@ -59,7 +60,7 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException("게시글을 찾을 수 없습니다."));
 
         if (!post.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("게시글 수정 권한이 없습니다.");
+            throw new ForbiddenException("게시글 수정 권한이 없습니다.");
         }
 
         postRepository.delete(post);
